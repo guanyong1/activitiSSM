@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+                        http://www.springframework.org/schema/context    
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd    
+                        http://www.springframework.org/schema/mvc    
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/aop    
+                        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">  
+                        
+    <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->  
+  	<context:component-scan base-package="com.activitiSSM.controller" />
+   
+   <!-- spring-aop  自动代理 -->
+   <aop:aspectj-autoproxy/>
+    
+    <!-- 用户拦截器 -->
+    <!--<mvc:interceptors>-->
+    <!--&lt;!&ndash; 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 &ndash;&gt;-->
+	    <!--<mvc:interceptor>-->
+	        <!--<mvc:mapping path="/get*/**"/>-->
+	        <!--&lt;!&ndash; 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 &ndash;&gt;-->
+	        <!--<bean class="com.UMP.platform.interceptor.UserInterceptor"/>-->
+	    <!--</mvc:interceptor>-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/pay*"/>-->
+            <!--&lt;!&ndash; 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 &ndash;&gt;-->
+            <!--<bean class="com.UMP.platform.interceptor.PayUserInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+   
+   <!-- 配置静态资源前需要加入<mvc:annotation-driven/>才能正常使用springmvc注解 -->
+   		<mvc:annotation-driven/>
+       <!--    配置静态资源 -->
+       <!--对静态资源文件的访问 -->
+       <!-- 这样根目录下面的resource的文件(.css,.js等)就不会被spring的DispatchServlet进行过滤 -->
+   		<mvc:default-servlet-handler />
+		 <!-- <mvc:resources mapping="/views/**" location="/views/" />
+		<mvc:resources mapping="/js/**" location="/WEB-INF/js/" /> -->
+
+		<!-- <mvc:resources mapping="/web/**" location="/*" /> -->
+
+		  
+    <!--避免IE执行AJAX时，返回JSON出现下载文件 -->  
+    <bean id="mappingJacksonHttpMessageConverter"  class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">  
+        <property name="supportedMediaTypes">  
+            <list>  
+                <value>text/html;charset=UTF-8</value>  
+            </list>  
+        </property>  
+    </bean>
+    <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->  
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
+        <property name="messageConverters">  
+            <list>  
+                <ref bean="mappingJacksonHttpMessageConverter" /> <!-- JSON转换器   -->
+            </list>  
+        </property>  
+    </bean>
+
+    <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="utf-8"></property>
+        <!-- 文件大小最大值 -->
+        <property name="maxUploadSize" value="10485760000"></property>
+        <!-- 内存中的最大值 -->
+        <property name="maxInMemorySize" value="40960"></property>
+    </bean>
+    <!--<bean id="exceptionResolver" class="com.UMP.platform.interceptor.ExceptionHandler"></bean>-->
+    <!--<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">/WEB-INF/404.jsp</prop>
+            </props>
+        </property>
+    </bean>-->
+
+    <import resource="activiti-context.xml"></import>
+</beans>
