@@ -25,12 +25,12 @@
     <div class="x-nav">
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>请假管理</cite></a>
+              <a><cite>部署管理</cite></a>
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
         </div>
         <br>
-    <table id="tb_departments"></table>
+    <table id="tb_info"></table>
 </div>
 
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
@@ -57,13 +57,13 @@
             });
 
 
-            var TableInit = function (id,url) {
+            var TableInit = function () {
                 var oTableInit = new Object();
                 //初始化Table
                 oTableInit.Init = function () {
-                    $('#tb_departments').bootstrapTable({
-                        url: '/test',         //请求后台的URL（*）
-                        method: 'post',                      //请求方式（*）
+                    $("#tb_info").bootstrapTable({
+                        url: '/Home/GetDepartment',         //请求后台的URL（*）
+                        method: 'get',                      //请求方式（*）
                         // toolbar: '#toolbar',                //工具按钮用哪个容器
                         striped: true,                      //是否显示行间隔色
                         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
