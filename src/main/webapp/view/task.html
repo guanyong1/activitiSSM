@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>
-            请假管理
+            任务管理
         </title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -25,13 +25,12 @@
     <div class="x-nav">
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>请假管理</cite></a>
+              <a><cite>任务管理</cite></a>
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
         </div>
         <br>
-    <h3>请假申请列表</h3>
-    <a>添加请假申请</a>
+    <h3>个人任务管理列表</h3>
     <table id="tb_departments"></table>
 </div>
 
@@ -94,26 +93,17 @@
                             visible:false
                         }, {
                             field: 'Name',
-                            title: '请假人'
+                            title: '任务名称'
                         }, {
                             field: 'ParentName',
-                            title: '请假天数'
+                            title: '创建时间'
                         }, {
                             field: 'Level',
-                            title: '请假事由'
-                        }, {
-                            field: 'Desc',
-                            title: '请假备注'
-                        },{
-                            field: 'Desc',
-                            title: '请假时间'
-                        },{
-                            field: 'Desc',
-                            title: '请假状态'
+                            title: '办理人'
                         },{
                             field: 'Desc',
                             title: '操作'
-                        }, ]
+                        } ]
                     });
                 };
 

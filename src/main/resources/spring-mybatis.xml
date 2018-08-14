@@ -91,4 +91,7 @@
         <aop:pointcut id="serviceMethods" expression="execution(public * com.activitiSSM.service.*.*(..))"/>
         <aop:advisor pointcut-ref="serviceMethods" advice-ref="txAdvice"/>
     </aop:config>
+
+    <!-- 引入activiti配置文件-->
+    <import resource="activiti-context.xml"></import>
 </beans>
