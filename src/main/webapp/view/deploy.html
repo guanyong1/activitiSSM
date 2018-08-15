@@ -19,6 +19,7 @@
         <script src="lib/bootstrap/js/bootstrap.js"></script>
         <script src="lib/bootstrap/js/bootstrap-table.js"></script>
         <script src="lib/bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
+        <script src="js/ajaxfileupload.js"></script>
     </head>
 <body>
 <div class="x-body">
@@ -36,13 +37,38 @@
     <h3>流程定义信息列表</h3>
     <table id="tb_definition"></table>
     <h3>部署流程定义</h3>
+    <form id="inputCandidatesFileFrom" action="" method="post" enctype="multipart/form-data" style="display: inline">
     <div>
         <span>流程名称:</span>
-        <input type="text">
+        <input type="text" id="processName" name="processName">
     </div>
     <div>
-        <span>流程文件:</span>
-        <input type="file">
+        <input type="file" name="inputCandidatesFile" id="inputCandidatesFile" class="btn btn-warning" value="导入"
+               style="display: inline;width: 190px;">
+        <button type="button" style="width:auto" id="up" class="btn btn-warning shiny">导入
+        </button>
+    </div>
+    </form>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        流程图
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <img id="img_id" src="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div>
     </div>
 </div>
 
@@ -78,55 +104,60 @@
                 //初始化Table
                 oTableInit.Init = function () {
                     $("#tb_definition").bootstrapTable({
-                        url: '/Home/GetDepartment11',         //请求后台的URL（*）
-                        method: 'post',                      //请求方式（*）
-                        // toolbar: '#toolbar',                //工具按钮用哪个容器
-                        striped: true,                      //是否显示行间隔色
-                        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-                        pagination: true,                   //是否显示分页（*）
-                        sortable: false,                     //是否启用排序
-                        sortOrder: "asc",                   //排序方式
+                        url: '/getProcessDeployPage',         //请求后台的URL（*）
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                        method: 'Post', //请求方式（*）
+                        editable: true, /* 开启编辑模式 */
+                        //toolbar : '#toolbar', //工具按钮用哪个容器
+                        striped: true, //是否显示行间隔色
+                        cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                        pagination: true, //是否显示分页（*）
+                        sortable: false, //是否启用排序
+                        sortOrder: "asc", //排序方式
                         queryParams: oTableInit.queryParams,//传递参数（*）
-                        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                        pageNumber:1,                       //初始化加载第一页，默认第一页
-                        pageSize: 10,                       //每页的记录行数（*）
-                        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-                        search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-                        strictSearch: false,
-                        showColumns: false,                  //是否显示所有的列
-                        showRefresh: false,                  //是否显示刷新按钮
-                        minimumCountColumns: 2,             //最少允许的列数
-                        clickToSelect: true,                //是否启用点击选中行
-                        height: 250,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-                        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
-                        showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
-                        cardView: false,                    //是否显示详细视图
-                        detailView: false,                   //是否显示父子表
+                        sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                        pageNumber: 1, //初始化加载第一页，默认第一页
+                        pageSize: 10, //每页的记录行数（*）
+                        pageList: [10, 15], //可供选择的每页的行数（*）[5,10,15]
+                        search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                        strictSearch: true,
+                        /* height: 810,*/
+                        showColumns: false, //是否显示所有的列
+                        showRefresh: false, //是否显示刷新按钮
+                        minimumCountColumns: 0, //最少允许的列数
+                        clickToSelect: true, //是否启用点击选中行
+                        uniqueId: "id", //每一行的唯一标识，一般为主键列
+                        showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                        cardView: false, //是否显示详细视图
+                        detailView: false, //是否显示父子表
+                        singleSelect: false,
                         columns: [{
                             field:'id',
-                            title:'ID',
+                            title:'id',
                             //visible:false
                         }, {
-                            field: 'Name',
+                            field: 'name',
                             title: '流程名称'
                         }, {
-                            field: 'ParentName',
+                            field: 'key',
                             title: '流程定义的key'
                         },{
-                            field: 'Desc',
+                            field: 'version',
                             title: '流程定义的版本'
                         },{
-                            field: 'Desc',
+                            field: 'bpmn',
                             title: '流程定义文件'
                         },{
-                            field: 'Desc',
+                            field: 'png',
                             title: '流程定义图片'
                         },{
-                            field: 'Desc',
+                            field: 'deploye',
                             title: '部署ID'
                         },{
                             field: 'Desc',
-                            title: '操作'
+                            title: '操作',
+                            formatter: operateFormatter1,
+                            events: operateEvents1
                         } ]
                     });
                 };
@@ -134,10 +165,8 @@
                 //得到查询的参数
                 oTableInit.queryParams = function (params) {
                     var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-                        limit: params.limit,   //页面大小
-                        offset: params.offset,  //页码
-                        departmentname: $("#txt_search_departmentname").val(),
-                        statu: $("#txt_search_statu").val()
+                        pageSize: params.limit, //页面大小
+                        pageNum: (params.offset / params.limit) + 1
                     };
                     return temp;
                 };
@@ -149,71 +178,116 @@
                 //初始化Table
                 oTableInit.Init = function () {
                     $("#tb_info").bootstrapTable({
-                        url: '/Home/GetDepartment',         //请求后台的URL（*）
-                        method: 'get',                      //请求方式（*）
-                        // toolbar: '#toolbar',                //工具按钮用哪个容器
-                        striped: true,                      //是否显示行间隔色
-                        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-                        pagination: true,                   //是否显示分页（*）
-                        sortable: false,                     //是否启用排序
-                        sortOrder: "asc",                   //排序方式
+                        url: '/getDeployPage',         //请求后台的URL（*）
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                        method: 'Post', //请求方式（*）
+                        editable: true, /* 开启编辑模式 */
+                        //toolbar : '#toolbar', //工具按钮用哪个容器
+                        striped: true, //是否显示行间隔色
+                        cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                        pagination: true, //是否显示分页（*）
+                        sortable: false, //是否启用排序
+                        sortOrder: "asc", //排序方式
                         queryParams: oTableInit.queryParams,//传递参数（*）
-                        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                        pageNumber:1,                       //初始化加载第一页，默认第一页
-                        pageSize: 10,                       //每页的记录行数（*）
-                        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-                        search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-                        strictSearch: false,
-                        showColumns: false,                  //是否显示所有的列
-                        showRefresh: false,                  //是否显示刷新按钮
-                        minimumCountColumns: 2,             //最少允许的列数
-                        clickToSelect: true,                //是否启用点击选中行
-                        height: 250,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-                        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
-                        showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
-                        cardView: false,                    //是否显示详细视图
-                        detailView: false,                   //是否显示父子表
+                        sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                        pageNumber: 1, //初始化加载第一页，默认第一页
+                        pageSize: 10, //每页的记录行数（*）
+                        pageList: [10, 15], //可供选择的每页的行数（*）[5,10,15]
+                        search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                        strictSearch: true,
+                        /* height: 810,*/
+                        showColumns: false, //是否显示所有的列
+                        showRefresh: false, //是否显示刷新按钮
+                        minimumCountColumns: 0, //最少允许的列数
+                        clickToSelect: true, //是否启用点击选中行
+                        uniqueId: "id", //每一行的唯一标识，一般为主键列
+                        showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                        cardView: false, //是否显示详细视图
+                        detailView: false, //是否显示父子表
+                        singleSelect: false,
                         columns: [{
                             field:'id',
-                            title:'ID',
+                            title:'id',
                             visible:false
                         }, {
-                            field: 'Name',
+                            field: 'name',
                             title: '流程名称'
                         }, {
-                            field: 'ParentName',
+                            field: 'time',
                             title: '发布时间'
                         },{
                             field: 'Desc',
-                            title: '操作'
-                        }, ]
+                            title: '操作',
+                            formatter: operateFormatter,
+                            events: operateEvents
+                        } ]
                     });
                 };
 
                 //得到查询的参数
                 oTableInit.queryParams = function (params) {
                     var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-                        limit: params.limit,   //页面大小
-                        offset: params.offset,  //页码
-                        departmentname: $("#txt_search_departmentname").val(),
-                        statu: $("#txt_search_statu").val()
+                        pageSize: params.limit, //页面大小
+                        pageNum: (params.offset / params.limit) + 1
                     };
                     return temp;
                 };
                 return oTableInit;
             };
 
+            function operateFormatter(value, row, index) {
+                return ['<button type="button" class="RoleOfedita btn btn-primary" style="margin-right:15px;">删除</button>'
+                ].join('')
+            };
 
-//            var ButtonInit = function () {
-//                var oInit = new Object();
-//                var postdata = {};
-//
-//                oInit.Init = function () {
-//                    //初始化页面上面的按钮事件
-//                };
-//
-//                return oInit;
-//            };
+            window.operateEvents = {
+                'click .RoleOfedita': function (e, value, row, index) {
+                    $.post("/deleteDeploy",{deployId:row.id},function (data) {
+                        if (data == false){
+                            alert("删除失败");
+                        }else {
+                            alert("删除成功");
+                        }
+                        location.reload();
+                    });
+                }
+            };
+
+            function operateFormatter1(value, row, index) {
+                return ['<button type="button" class="RoleOfeditb btn btn-primary" style="margin-right:15px;">查看流程图</button>'
+                ].join('')
+            };
+
+            window.operateEvents1 = {
+                'click .RoleOfeditb': function (e, value, row, index) {
+                    $('#img_id').attr('src','/getProcessPng?deployId='+row.deploye);
+                    $('#myModal').modal('show')
+                }
+            };
+
+            $("#up").click(function () {
+                    $.ajaxFileUpload({
+                        type: "POST",
+                        url: "/uploadBPMN",
+                        secureuri: false,//是否启用安全提交，默认为false
+                        fileElementId: 'inputCandidatesFile',//文件选择框的id属性
+                        data: {"processName":$('#processName').val()},
+                        dataType: 'json',
+                        async: false,
+                        success: function (data) {
+                            if(data == false){
+                                alert("部署失败，请检查bpmn文件是否正确")
+                            }
+                            else {
+                                alert("部署成功")
+                                location.reload();
+                            }
+                        },
+                        error: function (data, status, e) {
+                            alert("失败")
+                        }
+                    });
+            });
             </script>
     </body>
 </html>
