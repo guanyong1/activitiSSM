@@ -17,13 +17,21 @@
 			<img class="headLogo" src="images/banner2.png"/>
 		</div>
 		<div class="headR">
-	    <a href="login.html" target="_parent">【退出】</a>
+	    <a href="../" target="_parent">【退出】</a>
 		</div>
 	</div>
     <div class="user">
-    <span>admin</span>
+    <span id="userName"></span>
     </div> 
-    
+    <script type="text/javascript">
+        $(document).ready(function(){
+			$.post("/getUser",function (data) {
+			    alert(data);
+				$('#userName').text(data);
+            })
+		})
+	</script>
 </body>
+
 
 </html>

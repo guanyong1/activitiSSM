@@ -46,21 +46,21 @@
 		<!-- <mvc:resources mapping="/web/**" location="/*" /> -->
 
 		  
-    <!--避免IE执行AJAX时，返回JSON出现下载文件 -->  
-    <bean id="mappingJacksonHttpMessageConverter"  class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">  
-        <property name="supportedMediaTypes">  
-            <list>  
-                <value>text/html;charset=UTF-8</value>  
-            </list>  
-        </property>  
+    <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
+    <bean id="mappingJacksonHttpMessageConverter"  class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
     </bean>
-    <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->  
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
-        <property name="messageConverters">  
-            <list>  
+    <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
                 <ref bean="mappingJacksonHttpMessageConverter" /> <!-- JSON转换器   -->
-            </list>  
-        </property>  
+            </list>
+        </property>
     </bean>
 
     <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器-->
@@ -80,4 +80,16 @@
             </props>
         </property>
     </bean>-->
+
+    <!--<mvc:annotation-driven>-->
+        <!--<mvc:message-converters>-->
+            <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
+                <!--<property name="supportedMediaTypes">-->
+                    <!--<list>-->
+                        <!--<value>application/json;charset=UTF-8</value>-->
+                    <!--</list>-->
+                <!--</property>-->
+            <!--</bean>-->
+        <!--</mvc:message-converters>-->
+    <!--</mvc:annotation-driven>-->
 </beans>

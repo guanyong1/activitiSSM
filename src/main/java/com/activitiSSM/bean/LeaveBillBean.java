@@ -34,7 +34,7 @@ public class LeaveBillBean {
     /**
      * 请假时间
      */
-    private String date;
+    private String leaveDate;
 
     /**
      * 请假状态

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.activitiSSM.dao.UserDao">
+    <select id="getUserByNameAndPwd" resultType="com.activitiSSM.bean.UserBean">
+        SELECT t.user_name as userName,t.leader as leader,t.pwd as pwd FROM t_user t where t.user_name = #{userName}
+        <if test="pwd != null">
+            AND t.pwd = #{pwd}
+        </if>
+    </select>
+
+</mapper>

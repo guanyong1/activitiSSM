@@ -2,19 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>心理诊断登录界面</title>
-<link href="css/style.css" rel="stylesheet" type="text/css" />
-<script language="JavaScript" src="js/jquery2.js"></script>
-<script src="js/cloud.js" type="text/javascript"></script>
-<script language="javascript" src="js/js.js"></script>
+<title>activitiSSM登录界面</title>
+<link href="view/css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="view/js/jquery2.js"></script>
+<script src="view/js/cloud.js" type="text/javascript"></script>
+<script language="javascript" src="view/js/js.js"></script>
 </head>
 
-<body style="background-color:#1c77ac; background-image: url(images/light.png) background-repeat:no-repeat; background-position:center top; overflow:hidden;">
+<body style="background-color:#1c77ac; background-image: url(view/images/light.png) background-repeat:no-repeat; background-position:center top; overflow:hidden;">
 <div id="mainBody">
   <div id="cloud1" class="cloud"></div>
   <div id="cloud2" class="cloud"></div>
 </div>
-<div class="logintop"> <span>欢迎登录心理诊断后台</span>
+<div class="logintop"> <span>activitiSSM</span>
   <ul>
     <li><a href="#">返回首页</a></li>
   </ul>
@@ -23,20 +23,32 @@
   <div class="loginbox">
     <ul>
       <li>
-        <input name="" type="text" class="loginuser" value="admin" onclick="JavaScript:this.value=''"/>
+        <input id="userName" type="text" class="loginuser" />
       </li>
       <li>
-        <input name="" type="text" class="loginpwd" value="密码" onclick="JavaScript:this.value=''"/>
+        <input id="pwd" type="text" class="loginpwd" />
       </li>
+      <!--<li>-->
+        <!--<input name="" type="text" class="loginy" placeholder="输入验证码"/><label><img src="images/images.jpg" /></label>-->
+      <!--</li>-->
       <li>
-        <input name="" type="text" class="loginy" placeholder="输入验证码"/><label><img src="images/images.jpg" /></label>
-      </li>
-      <li>
-        <input name="" type="button" class="loginbtn" value="登录"  onclick="javascript:window.location='index.html'"  />
+        <input id="loginBtn" type="button" class="loginbtn"  onclick="login()" value="登录"/>
       </li>
     </ul>
   </div>
 </div>
-<div class="loginbm">版权所有： 阳光心健 © Copyright 2014 - 2015.</div>
+<script type="text/javascript">
+    function login() {
+        var userName = $('#userName').val();
+        var pwd = $('#pwd').val();
+        $.post("/login",{userName:userName,pwd:pwd},function (data) {
+            if(data == false){
+                alert("用户名或密码错误")
+            }else {
+                window.location.href="view/index.html";
+            }
+        });
+    }
+</script>
 </body>
 </html>
