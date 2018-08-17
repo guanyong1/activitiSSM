@@ -95,8 +95,8 @@ public class WorkFlowServiceImpl implements IWorkFlowservice{
         }
         map.put("rows",dataList);
         map.put("total",total);
-        map.put("pageNumber",pageNumber);
-        map.put("pageSize",pageSize);
+//        map.put("pageNumber",pageNumber);
+//        map.put("pageSize",pageSize);
         return map;
     }
 
@@ -142,11 +142,16 @@ public class WorkFlowServiceImpl implements IWorkFlowservice{
         }
         map.put("rows",dataList);
         map.put("total",total);
-        map.put("pageNumber",pageNumber);
-        map.put("pageSize",pageSize);
+//        map.put("pageNumber",pageNumber);
+//        map.put("pageSize",pageSize);
         return map;
     }
 
+    /**
+     * 获取流程图
+     * @param deployId
+     * @return
+     */
     @Override
     public byte[] getProcessPng(String deployId) {
         //获取图片资源名称

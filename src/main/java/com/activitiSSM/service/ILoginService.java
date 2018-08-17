@@ -10,5 +10,5 @@ import com.activitiSSM.bean.UserBean;
  */
 public interface ILoginService {
 
-    public UserBean getUserByNameAndPwd(String userName,String pwd);
+    UserBean getUserByNameAndPwd(String userName,String pwd);
 }

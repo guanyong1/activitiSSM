@@ -17,7 +17,7 @@ public interface IWorkFlowservice {
      * @param name
      * @return
      */
-    public boolean deploy(ZipInputStream file, String name);
+    boolean deploy(ZipInputStream file, String name);
 
     /**
      * 获取流程部署信息列表
@@ -25,14 +25,14 @@ public interface IWorkFlowservice {
      * @param pageSize
      * @return
      */
-    public Map getDeployPage(int pageNumber, int pageSize);
+    Map getDeployPage(int pageNumber, int pageSize);
 
     /**
      * 根据id删除流程定义
      * @param deployId
      * @return
      */
-    public boolean deleteDeploy(String deployId);
+    boolean deleteDeploy(String deployId);
 
     /**
      * 获取流程定义信息列表
@@ -40,12 +40,12 @@ public interface IWorkFlowservice {
      * @param pageSize
      * @return
      */
-    public Map getProcessDeployPage(int pageNumber, int pageSize);
+    Map getProcessDeployPage(int pageNumber, int pageSize);
 
     /**
      * 获取流程图
      * @param deployId
      * @return
      */
-    public byte[] getProcessPng(String deployId);
+    byte[] getProcessPng(String deployId);
 }

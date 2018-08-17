@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.activitiSSM.dao">
+<mapper namespace="com.activitiSSM.dao.LeaveBillDao">
+    <select id="getAllLeave" resultType="com.activitiSSM.bean.LeaveBillBean">
+        SELECT t.user_id AS userId,t.days AS days,t.reason AS reason FROM T_LEAVE t
+    </select>
 
+    <delete id="deleteLeava">
+        DELETE T_LEAVE t where t.id = #{id}
+    </delete>
+
+    <insert id="addLeava" parameterType="com.activitiSSM.bean.LeaveBillBean" >
+        INSERT INTO T_LEAVE(id,user_id,days,reason) VALUES (#{id},#{userId},#{days},#{reason})
+    </insert>
 </mapper>

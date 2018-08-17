@@ -60,8 +60,8 @@ public class WorkFlowController {
      */
     @RequestMapping(value = "/getDeployPage")
     @ResponseBody
-    public Map getDeployPage(String pageNumber, String pageSize){
-        int num = pageNumber == null?1:Integer.parseInt(pageNumber);
+    public Map getDeployPage(String pageNum, String pageSize){
+        int num = pageNum == null?1:Integer.parseInt(pageNum);
         int size = pageSize == null?10:Integer.parseInt(pageSize);
         Map map = workFlowservice.getDeployPage(num,size);
         return map;
@@ -79,14 +79,14 @@ public class WorkFlowController {
 
     /**
      * 获取流程定义信息列表
-     * @param pageNumber
+     * @param pageNum
      * @param pageSize
      * @return
      */
     @RequestMapping(value = "/getProcessDeployPage")
     @ResponseBody
-    public Map getProcessDeployPage(String pageNumber, String pageSize){
-        int num = pageNumber == null?1:Integer.parseInt(pageNumber);
+    public Map getProcessDeployPage(String pageNum, String pageSize){
+        int num = pageNum == null?1:Integer.parseInt(pageNum);
         int size = pageSize == null?10:Integer.parseInt(pageSize);
         Map map = workFlowservice.getProcessDeployPage(num,size);
         return map;

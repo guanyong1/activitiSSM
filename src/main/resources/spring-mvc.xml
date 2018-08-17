@@ -45,7 +45,6 @@
 
 		<!-- <mvc:resources mapping="/web/**" location="/*" /> -->
 
-		  
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
     <bean id="mappingJacksonHttpMessageConverter"  class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
         <property name="supportedMediaTypes">
@@ -72,24 +71,8 @@
         <!-- 内存中的最大值 -->
         <property name="maxInMemorySize" value="40960"></property>
     </bean>
-    <!--<bean id="exceptionResolver" class="com.UMP.platform.interceptor.ExceptionHandler"></bean>-->
-    <!--<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="exceptionMappings">
-            <props>
-                <prop key="java.lang.Exception">/WEB-INF/404.jsp</prop>
-            </props>
-        </property>
-    </bean>-->
+    <!--异常处理，使用log.error打印错误日志-->
+    <bean id="exceptionResolver" class="com.activitiSSM.interceptor.ExceptionHandler"></bean>
 
-    <!--<mvc:annotation-driven>-->
-        <!--<mvc:message-converters>-->
-            <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
-                <!--<property name="supportedMediaTypes">-->
-                    <!--<list>-->
-                        <!--<value>application/json;charset=UTF-8</value>-->
-                    <!--</list>-->
-                <!--</property>-->
-            <!--</bean>-->
-        <!--</mvc:message-converters>-->
-    <!--</mvc:annotation-driven>-->
+
 </beans>

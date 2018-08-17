@@ -3,6 +3,8 @@ package com.activitiSSM.dao;
 import com.activitiSSM.bean.UserBean;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @Author:guang yong
  * Description:
@@ -17,5 +19,7 @@ public interface UserDao {
      * @param pwd
      * @return
      */
-    public UserBean getUserByNameAndPwd(@Param("userName") String userName,@Param("pwd")String pwd);
+    UserBean getUserByNameAndPwd(@Param("userName") String userName,@Param("pwd")String pwd);
+
+    List<UserBean> getAllUser();
 }

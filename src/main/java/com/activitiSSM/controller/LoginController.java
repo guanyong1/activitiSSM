@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author:guang yong
@@ -44,9 +43,11 @@ public class LoginController {
             return false;
         }
         request.getSession().setAttribute("userName",userBean.getUserName());
+        request.getSession().setAttribute("userId",userBean.getId());
         return true;
     }
 
+    //produces = "text/html; charset=utf-8"解决中文乱码
     @RequestMapping(value = "/getUser",produces = "text/html; charset=utf-8")
     @ResponseBody
     public String getUser(HttpServletRequest request){

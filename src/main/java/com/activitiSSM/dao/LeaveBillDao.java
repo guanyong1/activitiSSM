@@ -1,5 +1,9 @@
 package com.activitiSSM.dao;
 
+import com.activitiSSM.bean.LeaveBillBean;
+import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.Param;
+
 /**
  * @Author:guang yong
  * Description:
@@ -7,4 +11,10 @@ package com.activitiSSM.dao;
  * @Modified By:
  */
 public interface LeaveBillDao {
+
+    Page getAllLeave();
+
+    int deleteLeava(@Param("id") String id);
+
+    int addLeava(LeaveBillBean leava);
 }

@@ -2,6 +2,8 @@ package com.activitiSSM.bean;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 /**
  * @Author:guang yong
  * Description:请假实体类
@@ -10,7 +12,7 @@ import lombok.Data;
  */
 @Data
 public class LeaveBillBean {
-    private String id;
+    private String id = UUID.randomUUID().toString();
     /**
      * 请假人
      */
