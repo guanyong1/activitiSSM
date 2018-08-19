@@ -22,4 +22,6 @@ public interface UserDao {
     UserBean getUserByNameAndPwd(@Param("userName") String userName,@Param("pwd")String pwd);
 
     List<UserBean> getAllUser();
+
+    UserBean getLeader(@Param("userId") String userId);
 }

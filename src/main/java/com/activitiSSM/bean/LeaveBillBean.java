@@ -1,5 +1,6 @@
 package com.activitiSSM.bean;
 
+import com.activitiSSM.utils.LeaveStatusEnum;
 import lombok.Data;
 
 import java.util.UUID;
@@ -14,9 +15,14 @@ import java.util.UUID;
 public class LeaveBillBean {
     private String id = UUID.randomUUID().toString();
     /**
-     * 请假人
+     * 请假人ID
      */
     private String userId;
+
+    /**
+     * 请假人姓名
+     */
+    private String userName;
 
     /**
      * 请假天数
@@ -41,5 +47,25 @@ public class LeaveBillBean {
     /**
      * 请假状态
      */
-    private int status;
+    private Integer status;
+
+    private String statusString;
+
+    public String getStatusString() {
+        switch (status){
+            case 0:
+                statusString = "初始录入";
+                break;
+            case 1:
+                statusString = "审批中";
+                break;
+            case 2:
+                statusString = "审核通过";
+                break;
+            default:
+                statusString ="";
+                break;
+        }
+        return statusString;
+    }
 }

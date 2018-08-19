@@ -4,6 +4,8 @@ import com.activitiSSM.bean.LeaveBillBean;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
 /**
  * @Author:guang yong
  * Description:
@@ -12,9 +14,14 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface LeaveBillDao {
 
-    Page getAllLeave();
+    Page getAllLeave(@Param("userId") String userId);
 
-    int deleteLeava(@Param("id") String id);
+    LeaveBillBean getLeaveById(@Param("id") String id);
 
-    int addLeava(LeaveBillBean leava);
+    int deleteLeave(@Param("id") String id);
+
+    int addLeave(LeaveBillBean leave);
+
+    int updateLeave(LeaveBillBean leave);
+
 }

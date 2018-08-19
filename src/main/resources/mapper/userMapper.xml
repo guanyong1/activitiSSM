@@ -12,4 +12,7 @@
         SELECT t.user_name as userName,t.leader as leader,t.pwd as pwd FROM t_user t
     </select>
 
+    <select id="getLeader" resultType="com.activitiSSM.bean.UserBean">
+       SELECT t.id as id,t.user_name as userName,t.leader as leader,t.pwd as pwd FROM t_user u INNER JOIN t_user t on t.id = u.leader where u.id=#{userId}
+    </select>
 </mapper>

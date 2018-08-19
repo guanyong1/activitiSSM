@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>
+        </title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no">
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <link rel="stylesheet" href="./css/x-admin.css" media="all">
+    </head>
+    
+    <body>
+        <div class="x-body">
+                <input type="hidden" name="type">
+                <input type="hidden" name="leaveId"/>
+             <div class="layui-form-item">
+                    <label for="link" class="layui-form-label">
+                        <span class="x-red">*</span>请假天数
+              </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="link" name="days" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="link" class="layui-form-label">
+                        <span class="x-red">*</span>请假原因
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="link" name="reason" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_content" class="layui-form-label">
+                        <span class="x-red">*</span>备注
+                    </label>
+                    <div class="layui-input-inline">
+                        <input id="L_content" name="remark"
+                        placeholder="备注" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <button id="L_repass" class="layui-btn" onclick="add()">
+                        提交
+                    </button>
+                </div>
+        </div>
+        <script src="./lib/layui/layui.js" charset="utf-8">
+        </script>
+        <script src="./js/x-layui.js" charset="utf-8">
+        </script>
+        <script type="text/javascript">
+            layui.use(['form','layer','upload'], function(){
+                $ = layui.jquery;
+              var form = layui.form()
+              ,layer = layui.layer;
+            });
+            $(document).ready(function(){
+                var param =GetRequest();
+                var type = param.type;
+                $('input[name="type"]').val(type);
+                if(type == "update"){
+                    $.post("/getLeaveById",param,function (data) {
+                        $('input[name="type"]').val(data.type);
+                        $('input[name="leaveId"]').val(data.leave.id)
+                        $('input[name="days"]').val(data.leave.days);
+                        $('input[name="reason"]').val(data.leave.reason);
+                        $('input[name="remark"]').val(data.leave.remark);
+                    })
+                }
+            });
+            function GetRequest() {
+                var url = location.search; //获取url中"?"符后的字串
+                var theRequest = new Object();
+                if (url.indexOf("?") != -1) {
+                    var str = url.substr(1);
+                    strs = str.split("&");
+                    for(var i = 0; i < strs.length; i ++) {
+                        theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+                    }
+                }
+                return theRequest;
+            }
+            function add() {
+                var days =$('input[name="days"]').val();
+                var leaveId=$('input[name="leaveId"]').val();
+                var reason=$('input[name="reason"]').val();
+                var remark=$('input[name="remark"]').val();
+                var type = $('input[name="type"]').val();
+                if(days.length <1 || reason.length <1){
+                    alert("请填完必填信息");
+                    return;
+                }
+                $.post("/saveOrUpdate",{days:days,reason:reason,remark:remark,type:type,leaveId:leaveId},function (data) {
+                    if (data == true) {
+                        alert("操作成功");
+                        window.location.href="leave.html";
+                    }else {
+                        alert("操作失败");
+                    }
+                }).error(function () {
+                    alert("异常")
+                });
+            }
+        </script>
+    </body>
+
+</html>

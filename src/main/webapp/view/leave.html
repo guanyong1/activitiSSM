@@ -31,8 +31,13 @@
         </div>
         <br>
     <h3>请假申请列表</h3>
-    <a>添加请假申请</a>
+    <button type="button" class="btn btn-primary" style="margin-right:15px;" onclick="add()">添加请假申请</button>
+    <br>
     <table id="tb_departments"></table>
+    <form id="updateForm">
+        <input type="hidden" name="type">
+        <input type="hidden" name="id">
+    </form>
 </div>
 
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
@@ -59,7 +64,7 @@
             });
 
 
-            var TableInit = function (id,url) {
+            var TableInit = function () {
                 var oTableInit = new Object();
                 //初始化Table
                 oTableInit.Init = function () {
@@ -77,8 +82,8 @@
                         queryParams: oTableInit.queryParams,//传递参数（*）
                         sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
                         pageNumber: 1, //初始化加载第一页，默认第一页
-                        pageSize: 2, //每页的记录行数（*）
-                        pageList: [2,3], //可供选择的每页的行数（*）[5,10,15]
+                        pageSize: 5, //每页的记录行数（*）
+                        pageList: [5,10], //可供选择的每页的行数（*）[5,10]
                         search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
                         strictSearch: true,
                         /* height: 810,*/
@@ -96,7 +101,7 @@
                             title:'ID',
                             visible:false
                         }, {
-                            field: 'userId',
+                            field: 'userName',
                             title: '请假人'
                         }, {
                             field: 'days',
@@ -111,11 +116,17 @@
                             field: 'leaveDate',
                             title: '请假时间'
                         },{
-                            field: 'status',
+                            field: 'statusString',
                             title: '请假状态'
                         },{
+                            field: 'status',
+                            title: '请假状态',
+                            visible:false
+                        },{
                             field: 'Desc',
-                            title: '操作'
+                            title: '操作',
+                            formatter: operateFormatter,
+                            events: operateEvents
                         }]
                     });
                 };
@@ -130,6 +141,57 @@
                 };
                 return oTableInit;
             };
+
+            function operateFormatter(value, row, index) {
+                if(row.status == 1){
+                    return ['<button type="button" id="search" class="btn btn-primary" style="margin-right:15px;">查看审核记录</button>'
+                    ].join('')
+                }else if(row.status == 2){
+                    return ['<button type="button" id="search" class="btn btn-primary" style="margin-right:15px;">查看审核记录</button>'
+                    ].join('')
+                }else {
+                    return ['<button type="button" id="update" class="btn btn-primary" style="margin-right:15px;">修改</button>',
+                        '<button type="button" id="delete" class="btn btn-primary" style="margin-right:15px;">删除</button>',
+                        '<button type="button" id="sub" class="btn btn-primary" style="margin-right:15px;">申请请假</button>'
+                    ].join('')
+                }
+            };
+
+            window.operateEvents = {
+                'click #delete': function (e, value, row, index) {
+                    $.post("/deleteLeave",{id:row.id},function (data) {
+                        if (data > 0){
+                            alert("删除成功");
+                        }else {
+                            alert("操作失败");
+                        }
+                        location.reload();
+                    }).error(function () {
+                        alert("异常")
+                    });
+                },
+                'click #update': function (e, value, row, index) {
+                    window.location.href="leave_add.html?type=update&id="+row.id;
+                },
+                'click #search': function (e, value, row, index) {
+                    window.location.href="leave_record.html?leaveId="+row.id;
+                },'click #sub': function (e, value, row, index) {
+                   $.post("/applyLeave",{leaveId:row.id},function (data) {
+                        if(data == true){
+                            alert("申请成功");
+                            window.location.reload();
+                        }else {
+                            alert("申请失败")
+                        }
+                   }).error(function () {
+                       alert("异常")
+                   });
+                }
+            };
+
+            function add() {
+                window.location.href="leave_add.html?type=add";
+            }
 
 
             var ButtonInit = function () {

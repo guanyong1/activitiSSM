@@ -2,14 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.activitiSSM.dao.LeaveBillDao">
     <select id="getAllLeave" resultType="com.activitiSSM.bean.LeaveBillBean">
-        SELECT t.user_id AS userId,t.days AS days,t.reason AS reason FROM T_LEAVE t
+        SELECT t.id,t.user_id AS userId,t.days,t.reason,t.remark,t.status,t.leave_date as leaveDate,u.user_name as userName FROM T_LEAVE t join t_user u on u.id = t.user_id
+        where t.user_id =#{userId}
     </select>
 
-    <delete id="deleteLeava">
-        DELETE T_LEAVE t where t.id = #{id}
+    <select id="getLeaveById" resultType="com.activitiSSM.bean.LeaveBillBean">
+        select t.id,t.user_id AS userId,t.days,t.reason,t.remark,t.status,t.leave_date as leaveDate from T_LEAVE t where t.id = #{id}
+    </select>
+
+    <delete id="deleteLeave">
+        DELETE from T_LEAVE where id = #{id}
     </delete>
 
-    <insert id="addLeava" parameterType="com.activitiSSM.bean.LeaveBillBean" >
-        INSERT INTO T_LEAVE(id,user_id,days,reason) VALUES (#{id},#{userId},#{days},#{reason})
+    <insert id="addLeave" parameterType="com.activitiSSM.bean.LeaveBillBean">
+        INSERT INTO T_LEAVE(id,user_id,days,reason,leave_date,status,remark) VALUES (#{id},#{userId},#{days},#{reason},#{leaveDate},#{status},#{remark})
     </insert>
+
+    <update id="updateLeave" parameterType="com.activitiSSM.bean.LeaveBillBean">
+        update T_LEAVE t set t.days =#{days},t.reason=#{reason},t.remark=#{remark},t.status=#{status} where t.id =#{id}
+    </update>
 </mapper>

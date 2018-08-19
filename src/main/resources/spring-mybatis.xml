@@ -60,8 +60,8 @@
                 <bean class="com.github.pagehelper.PageHelper">
                     <property name="properties">
                         <value>
-                            <!--dialect=mysql-->
-                            dialect=oracle
+                            dialect=mysql
+                            <!--dialect=oracle-->
                         </value>
                     </property>
                 </bean>
